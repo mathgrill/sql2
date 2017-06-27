@@ -1,0 +1,5 @@
+SELECT   listagg (CASE WHEN column_name <> UPPER (column_name) THEN '"' || column_name || '"' ELSE column_name END, ',' || CHR (13))
+            WITHIN GROUP (ORDER BY column_id)
+            cols
+  FROM   all_tab_cols
+ WHERE   table_name = 'EMPLOYEE' AND owner = 'HR';
