@@ -1,0 +1,10 @@
+CREATE OR REPLACE VIEW hr.vw_temp_depend
+AS
+   SELECT   d.d_obj# object_id, d.p_obj# referenced_object_id
+     FROM   sys.dependency$ d
+    WHERE   d.d_obj# IN
+                  (SELECT   object_id
+                     FROM   dba_objects
+                    WHERE       owner = ANY ('HR')
+                            AND object_type IN ('FUNCTION', 'PROCEDURE', 'PACKAGE', 'PACKAGE BODY', 'VIEW', 'TRIGGER', 'MATERIALIZED VIEW')
+                            AND status = 'INVALID');
