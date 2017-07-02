@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE hr.sp_compile_obj (object_id_in IN NUMBER)
+IS
+   v_sql   VARCHAR2 (4000);
+
+   CURSOR c1
+   IS
+      SELECT   USER,
+               DECODE (OBJECT_TYPE,
+                       'PACKAGE BODY', 'alter package ' || OBJECT_NAME || ' compile body',
+                       'alter ' || OBJECT_TYPE || ' ' || OBJECT_NAME || ' compile')
+                  sql_
+        FROM   user_objects a
+       WHERE   object_id = object_id_in;
+BEGIN
+   FOR row IN c1
+   LOOP
+      DBMS_OUTPUT.PUT_LINE (row.sql_);
+
+      EXECUTE IMMEDIATE row.sql_;
+   END LOOP;
+END;
+/
