@@ -1,0 +1,4 @@
+CREATE OR REPLACE VIEW hr.vw_ord_obj_by_depend  AS
+SELECT MAX(LEVEL) dlevel, object_id FROM hr.vw_temp_depend
+CONNECT BY object_id = PRIOR referenced_object_id
+GROUP BY object_id;
