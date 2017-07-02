@@ -1,0 +1,6 @@
+CREATE VIEW hr.vw_invalid_obj as
+SELECT   *
+  FROM   dba_objects
+ WHERE       owner = ANY ('HR')
+         AND object_type IN ('FUNCTION', 'PROCEDURE', 'PACKAGE', 'PACKAGE BODY', 'VIEW', 'TRIGGER', 'MATERIALIZED VIEW')
+         AND status = 'INVALID';
