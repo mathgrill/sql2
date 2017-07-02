@@ -1,0 +1,34 @@
+CREATE OR REPLACE PROCEDURE hr.sp_compile_invalid
+IS
+   v_obj   INTEGER;
+
+   CURSOR c1
+   IS
+        SELECT   owner,
+                 a.object_id,
+                 dlevel
+          FROM   dba_objects a, hr.vw_ord_obj_by_depend b
+         WHERE       a.owner = ANY ('HR')
+                 AND status = 'INVALID'
+                 AND a.object_id = b.object_id(+)
+                 AND object_type IN ('PACKAGE BODY', 'PACKAGE', 'FUNCTION', 'PROCEDURE', 'TRIGGER', 'VIEW', 'MATERIALIZED VIEW')
+      ORDER BY   dlevel DESC, object_type, object_name;
+BEGIN
+   FOR row IN c1
+   LOOP
+      BEGIN
+         v_obj := row.object_id;
+
+         -- dbms_output.put_line (row.owner);
+         IF row.owner = 'HR'
+         THEN
+            hr.sp_compile_obj (row.object_id);
+         END IF;
+      EXCEPTION
+         WHEN OTHERS
+         THEN
+            DBMS_OUTPUT.put_line (v_obj);
+      END;
+   END LOOP;
+END;
+/
