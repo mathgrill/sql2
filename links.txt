@@ -1,0 +1,2 @@
+https://stackoverflow.com/questions/35997999/google-maps-javascript-api-map-not-showing-on-print-or-print-preview-but-shape
+
