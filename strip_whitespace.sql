@@ -18,3 +18,7 @@ Even better (replace chr(0) as well):
 REPLACE(REGEXP_REPLACE( id_number, '[[:space:]]'), CHR(0))
 or
 REPLACE(REGEXP_REPLACE( id_number, '\s'), CHR(0))
+
+--keep only digits
+SELECT REGEXP_REPLACE('+34 (947) 123 456 ext. 2013', '[^0-9]+', '')
+FROM DUAL;
