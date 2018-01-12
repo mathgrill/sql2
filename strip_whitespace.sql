@@ -22,3 +22,9 @@ REPLACE(REGEXP_REPLACE( id_number, '\s'), CHR(0))
 --keep only digits
 SELECT REGEXP_REPLACE('+34 (947) 123 456 ext. 2013', '[^0-9]+', '')
 FROM DUAL;
+
+
+-- examples of removing chr 160 - non-breaking space at the either end of the string
+SELECT   CHR (160) || '00012300', TRIM (BOTH CHR (160) FROM CHR (160) || '00012300') FROM DUAL;
+
+SELECT   REGEXP_REPLACE ('   ' || CHR (160) || '   vvvvv   ' || CHR (160), '(^[[:space:]]|' || CHR (160) || '+)|([[:space:]]|' || CHR (160) || '+$)', NULL) FROM DUAL;
