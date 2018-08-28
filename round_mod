@@ -1,0 +1,15 @@
+SELECT   *
+  FROM   (SELECT   t.*,
+                   CASE WHEN num_rd BETWEEN low AND high THEN 1 ELSE 0 END eval,
+                   RANK () OVER (ORDER BY CASE WHEN num_rd BETWEEN low AND high THEN 1 ELSE 0 END DESC, rd) rk
+            FROM   (SELECT   ROUND (num, rd) num_rd,
+                             num * (1 - :factor) low,
+                             num * (1 + :factor) high,
+                             rd
+                      FROM   (SELECT   :x num, rd
+                                FROM      DUAL
+                                       NATURAL JOIN
+                                          (    SELECT   -LEVEL rd
+                                                 FROM   DUAL
+                                           CONNECT BY   LEVEL <= LENGTH (TRUNC (:x)) + 1))) t)
+ WHERE   rk = 1;
