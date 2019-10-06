@@ -1,5 +1,6 @@
 SELECT banner FROM v$version WHERE ROWNUM = 1;
 
+--if db is 18C
 alter session set "_ORACLE_SCRIPT"=true;  
 
 CREATE USER php IDENTIFIED BY "password";
